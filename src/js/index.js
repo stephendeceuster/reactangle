@@ -1,4 +1,5 @@
-var randomColor = require("random-color");
+//var randomColor = require("random-color");
+import randomColor from "random-color";
 
 const getRandomRangeIntInc = (min, max) =>
   Math.floor(Math.random() * max - min + 1) + min;
@@ -51,7 +52,7 @@ class Rectangle {
     return document.querySelector("div:first-child");
   }
 
-  styling() {
+  styling = () => {
     const styles = {
       left: this._x - this._width / 2 + "px",
       top: this._y - this._height / 2 + "px",
@@ -60,39 +61,42 @@ class Rectangle {
       backgroundColor: randomColor().hexString(),
     };
     Object.assign(this._ref.style, styles);
-  }
+  };
 
   getSurface() {
     return this._width * this._height;
   }
 
   changeBgc() {
-   // this._ref.addEventListener('click', () => this.styling() );
-   this._ref.onclick = function() {
-        this.styling().bind(this);
-   };
+    this._ref.onclick = this.styling;
   }
 
   static getDistance(r1, r2) {
-      const dx = r1._x - r2._x;
-      const dy = r1._y - r2._y;
-      return Math.sqrt(dx*dx + dy*dy);
+    const dx = r1._x - r2._x;
+    const dy = r1._y - r2._y;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 
   static isColliding(r1, r2) {
-    return !((r1._width/2)+(r2._width/2) < Math.abs(r1._x - r2._x) && (r1._height/2)+(r2._height/2) < Math.abs(r1._y - r2._y));
+    return !(
+      r1._width / 2 + r2._width / 2 < Math.abs(r1._x - r2._x) &&
+      r1._height / 2 + r2._height / 2 < Math.abs(r1._y - r2._y)
+    );
     // return true if rectangles are colliding
+  }
+
+  geefX() {
+    return this._x;
   }
 }
 
-
-let counter = 10;
+let counter = 60;
 
 while (counter--) {
-  w = getRandomRangeIntInc(50, 200);
-  h = getRandomRangeIntInc(50, 250);
-  x = getRandomRangeIntInc(10, 1250);
-  y = getRandomRangeIntInc(10, 620);
+  const w = getRandomRangeIntInc(50, 200);
+  const h = getRandomRangeIntInc(50, 250);
+  const x = getRandomRangeIntInc(10, 1250);
+  const y = getRandomRangeIntInc(10, 620);
   new Rectangle(w, h, x, y);
 }
 
@@ -100,7 +104,12 @@ const rect1 = new Rectangle(100, 100, 250, 250);
 const rect2 = new Rectangle(100, 100, 50, 50);
 
 rect1.width = 200;
-
+console.log(rect1.zever);
 console.log(Rectangle.getDistance(rect1, rect2));
 console.log(Rectangle.isColliding(rect1, rect2));
 
+const elements = document.body.querySelectorAll(".rect");
+
+//setInterval(() => {
+//  console.log(rect1.geefX());
+//}, 500);
